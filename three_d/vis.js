@@ -55,33 +55,27 @@ function init_plot(data) {
     params.axis_font_color = "#FF0000";
     params.show_labels = true;
     params.max_point_height = 40;
-    params.x_scale_bounds = [-2, 4];
-    params.y_scale_bounds = [-2, 3];
-    params.z_scale_bounds = [-1, 2];
+    params.x_scale_bounds = [-2, 5];
+    params.y_scale_bounds = [-2, 4];
+    params.z_scale_bounds = [-3, 4];
     params.tick_font_size = 20;
 
     params.data = [];
 
-    // params.data.push({
-    //     "x": 0,
-    //     "y": 0,
-    //     "z": 0,
-    //     "size": 1,
-    //     "color": "transparent",
-    //     "label": '',
-    //     "other": { "label_on": params.show_labels }
-    // })
     var i = 0;
     colors = ['crimson','orange','gold',
     'mediumseagreen','turquoise','deepskyblue',
     'blueviolet','pink','peru']
+
+    var length = data.length;
+
     data.forEach(elt => {
         params.data.push({
             "x": elt.vector.x,
             "y": elt.vector.y,
             "z": elt.vector.z,
             // "size": .1,
-            "color": colors[i],
+            "color": colors[i % length],
             "label": elt.word,
             "other": { "label_on": params.show_labels }
         })
@@ -178,7 +172,7 @@ function init_plot(data) {
 
 $( document ).ready(function() {
     console.log( "ready!" );
-    $.getJSON( "numbers3d_2-5.json", function( data ) {
+    $.getJSON( "people_2-5.json", function( data ) {
         console.log(data);
         init_plot(data);
     });
