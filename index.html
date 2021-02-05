@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>russian word embeddings in three_d.js</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1px">
+	<style>
+		.maintext {
+			max-width: 550px;
+			text-align: justify;
+		}
+
+		span,h3 {
+			color: gray;
+		}
+
+	</style>
+	<script type="text/javascript" src="/js/three.r81.min.js"></script>
+	<script type="text/javascript" src="/js/three_d.js"></script>
+	<script src="/js/prism_all.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="/css/r_80s.css" />
+</head>
+
+<body>
+	<div class="maintitle">
+		<h2>3D representation of the 300D Navec vectors (with PCA)</h2>
+		<h3>один, два, три, чертыре, пять, шесть, семь, восемь, десять</h3>
+	</div>
+	<div class="maintext center_align">
+
+		<!-- <p><span class="js_link" onclick="randomise_points()">Randomise points</span>; <span class="js_link"
+				onclick="toggle_labels()">Toggle labels</span>.</p> -->
+
+		<div id="div_plot_area"></div>
+		<br><br>
+		<hr>
+		<h3>using three_d.js: interactive 3D scatter plots</h3>
+		<script type="text/javascript" src='vis.js'></script>
+</body>
+
+</html>
