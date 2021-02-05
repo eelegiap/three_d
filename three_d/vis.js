@@ -62,12 +62,14 @@ function init_plot(data) {
 
     params.data = [];
 
-    var i = 0;
+    var i = 1;
     colors = ['crimson','orange','gold',
     'mediumseagreen','turquoise','deepskyblue',
-    'blueviolet','pink','peru']
-
-    var length = data.length;
+    'blueviolet','pink','peru','coral','darkorange',
+    'light yellow','peachpuff','lime','olive','lightcyan','lightseagreen',
+    'powderblue','cornflowerblue','slateblue','lavender',
+    'purple','indigo','medium violetred','deeppink','hotpink',
+    'mistyrose','lightslategray','maroon']
 
     data.forEach(elt => {
         params.data.push({
@@ -75,7 +77,7 @@ function init_plot(data) {
             "y": elt.vector.y,
             "z": elt.vector.z,
             // "size": .1,
-            "color": colors[i % length],
+            "color": colors[Math.floor(Math.random() * colors.length)],
             "label": elt.word,
             "other": { "label_on": params.show_labels }
         })
@@ -172,7 +174,7 @@ function init_plot(data) {
 
 $( document ).ready(function() {
     console.log( "ready!" );
-    $.getJSON( "people_2-5.json", function( data ) {
+    $.getJSON( "people2_2-5.json", function( data ) {
         console.log(data);
         init_plot(data);
     });
