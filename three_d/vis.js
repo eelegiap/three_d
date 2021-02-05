@@ -55,9 +55,9 @@ function init_plot(data) {
     params.axis_font_color = "#FF0000";
     params.show_labels = true;
     params.max_point_height = 40;
-    params.x_scale_bounds = [-2, 5];
-    params.y_scale_bounds = [-2, 4];
-    params.z_scale_bounds = [-3, 4];
+    params.x_scale_bounds = [-5, 5];
+    params.y_scale_bounds = [-5, 5];
+    params.z_scale_bounds = [-5, 5];
     params.tick_font_size = 20;
 
     params.data = [];
