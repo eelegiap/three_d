@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>people - gender</title>
+	<title>numbers</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1px">
 	<style>
@@ -26,7 +26,7 @@
 <body>
 	<div class="maintitle">
 		<h2>3D representation of the 300D Navec vectors (with PCA)</h2>
-		<h3>['царь', 'царица', 'мужчина', 'женщина', 'девушка', 'девочка', 'мальчик', 'парень']</h3>
+		<h3>['один','два','три','четыре','пять','шесть','семь','восемь','девять','десять','двадцать']</h3>
 	</div>
 	<div class="maintext center_align">
 
@@ -57,53 +57,39 @@
 				three_d.update_render(0);
 			}
 
-			// function randomise_points() {
-			//     var i;
-
-			//     var params = {};
-			//     params.keep_axes = true;
-			//     params.data = [];
-
-			//     var r, g, b;
-
-			//     for (i = 0; i < three_d.plots[0].points.length; i++) {
-			//         r = Math.round(255 * Math.random());
-			//         g = Math.round(255 * Math.random());
-			//         b = Math.round(255 * Math.random());
-
-			//         params.data.push({
-			//             "x": Math.random(),
-			//             "y": Math.random(),
-			//             "z": Math.random(),
-			//             "size": 0.1 + Math.random(),
-			//             "color": 65536 * r + 256 * g + b,
-			//             "other": { "label_on": params.show_labels }
-			//         });
-			//     }
-
-			//     three_d.change_data(0, params, false, true);
-			// }
-
 			function init_plot(data) {
 				var i, j;
 				var alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 				var num_points = 50;
 
-				var params = {};
+                var Xs = []
+                var Ys = []
+                var Zs = []
+
+                data.forEach(function(word) {
+                    Xs.push(word.vector.x)
+                    Ys.push(word.vector.y)
+                    Zs.push(word.vector.z)
+                })
+                Xs.sort((a,b) => a-b)
+                Ys.sort((a,b) => a-b)
+                Zs.sort((a,b) => a-b)
+
+                var params = {};
 				params.div_id = "div_plot_area";
 				params.label_font_size = 18;
 				params.axis_font_size = 36;
 				params.axis_font_color = "#FF0000";
 				params.show_labels = true;
 				params.max_point_height = 40;
-				params.x_scale_bounds = [-5, 5];
-				params.y_scale_bounds = [-5, 5];
-				params.z_scale_bounds = [-5, 5];
+				params.x_scale_bounds = [Math.floor(Xs[0]), Math.ceil(Xs.slice(-1)[0])];
+				params.y_scale_bounds = [Math.floor(Ys[0]), Math.ceil(Ys.slice(-1)[0])];
+				params.z_scale_bounds = [Math.floor(Zs[0]), Math.ceil(Zs.slice(-1)[0])];
 				params.tick_font_size = 20;
 
 				params.data = [];
-
+                console.log('params',params);
 				var i = 1;
 				colors = ['crimson', 'orange', 'gold',
 					'mediumseagreen', 'turquoise', 'deepskyblue',
@@ -125,49 +111,6 @@
 					})
 					i++
 				});
-				// test
-				// params.data.push({
-				//     "x": 0,
-				//     "y": 0,
-				//     "z": 0,
-				//     "size": 5,
-				//     "color": "blue",
-				//     "label": "this_label",
-				//     "other": { "label_on": params.show_labels }
-				// })
-				// params.data.push({
-				//     "x": 5,
-				//     "y": 5,
-				//     "z": 5,
-				//     "size": 1,
-				//     "color": "red",
-				//     "label": "this_label",
-				//     "other": { "label_on": params.show_labels }
-				// })
-				// test
-
-				// var rgb = [0, 0, 0];
-
-				// for (i = 0; i < num_points; i++) {
-				//     this_label = "";
-				//     this_color = 0;
-				//     for (j = 0; j < 3; j++) {
-				//         n = Math.floor(Math.random() * 26);
-				//         this_label += alphabet.substr(n, 1);
-
-				//         rgb[j] = Math.round(255 * Math.random());
-				//     }
-				//     console.log('rgb',rgb);
-				//     params.data.push({
-				//         "x": Math.random(),
-				//         "y": Math.random(),
-				//         "z": Math.random(),
-				//         "size": 0.1 + Math.random(),
-				//         "color": 65536 * rgb[0] + 256 * rgb[1] + rgb[2],
-				//         "label": this_label,
-				//         "other": { "label_on": params.show_labels }
-				//     });
-				// }
 
 				params.mouseover = function (i_plot, i, d) {
 					three_d.set_point_color(i_plot, i, 0xFFFFFF);
@@ -216,8 +159,7 @@
 
 			$(document).ready(function () {
 				console.log("ready!");
-				$.getJSON("people_2-5.json", function (data) {
-					console.log(data);
+				$.getJSON("numbers2-10.json", function (data) {
 					init_plot(data);
 				});
 			});
