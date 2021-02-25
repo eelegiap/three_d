@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>чай 25</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1px">
+	<style>
+		.maintext {
+			max-width: 550px;
+			text-align: justify;
+		}
+
+		span,
+		h3 {
+			color: gray;
+		}
+	</style>
+	<script type="text/javascript" src="../js/three.r81.min.js"></script>
+	<script type="text/javascript" src="../js/three_d.js"></script>
+	<script src="../js/prism_all.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="../css/r_80s.css" />
+</head>
+
+<body>
+	<div class="maintitle">
+		<h2>25 most similar words to чай</h2>
+		<h3>3D representation of the 300D Navec vectors (with PCA)</h3>
+	</div>
+	<div class="maintext center_align">
+
+		<!-- <p><span class="js_link" onclick="randomise_points()">Randomise points</span>; <span class="js_link"
+				onclick="toggle_labels()">Toggle labels</span>.</p> -->
+
+		<div id="div_plot_area"></div>
+		<br><br>
+		<div id="div_plot_area1"></div>
+		<hr>
+		<h3>using three_d.js: interactive 3D scatter plots</h3>
+		<!-- <script type="text/javascript" src='vis.js'></script> -->
+		<script>
+			function toggle_labels() {
+				// The 0 indices are the index of the plot; the page
+				// only has one, so the index is zero.
+
+				three_d.plots[0].label_toggle = !three_d.plots[0].label_toggle;
+
+				for (var i = 0; i < three_d.plots[0].points.length; i++) {
+					if (three_d.plots[0].label_toggle) {
+						three_d.show_label(0, i);
+					} else {
+						three_d.hide_label(0, i);
+					}
+				}
+
+				three_d.update_render(0);
+			}
+
+			function init_plot(data) {
+				var i, j;
+				var alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+				var num_points = 50;
+
+                var Xs = []
+                var Ys = []
+                var Zs = []
+
+                data.forEach(function(word) {
+                    Xs.push(word.vector.x)
+                    Ys.push(word.vector.y)
+                    Zs.push(word.vector.z)
+                })
+                Xs.sort((a,b) => a-b)
+                Ys.sort((a,b) => a-b)
+                Zs.sort((a,b) => a-b)
+
+                var params = {};
+				params.div_id = "div_plot_area";
+				params.label_font_size = 18;
+				params.axis_font_size = 36;
+				params.axis_font_color = "#FF0000";
+				params.show_labels = true;
+				params.max_point_height = 40;
+				params.x_scale_bounds = [Math.floor(Xs[0]), Math.ceil(Xs.slice(-1)[0])];
+				params.y_scale_bounds = [Math.floor(Ys[0]), Math.ceil(Ys.slice(-1)[0])];
+				params.z_scale_bounds = [Math.floor(Zs[0]), Math.ceil(Zs.slice(-1)[0])];
+				params.tick_font_size = 20;
+
+				params.data = [];
+                console.log('params',params);
+				var i = 1;
+				colors = ['crimson', 'orange', 'gold',
+					'mediumseagreen', 'turquoise', 'deepskyblue',
+					'blueviolet', 'pink', 'peru', 'coral', 'darkorange',
+					'light yellow', 'peachpuff', 'lime', 'olive', 'lightcyan', 'lightseagreen',
+					'powderblue', 'cornflowerblue', 'slateblue', 'lavender',
+					'purple', 'indigo', 'medium violetred', 'deeppink', 'hotpink',
+					'mistyrose', 'lightslategray', 'maroon']
+
+				data.forEach(elt => {
+					params.data.push({
+						"x": elt.vector.x,
+						"y": elt.vector.y,
+						"z": elt.vector.z,
+						// "size": .1,
+						"color": colors[Math.floor(Math.random() * colors.length)],
+						"label": elt.word,
+						"other": { "label_on": params.show_labels }
+					})
+					i++
+				});
+
+				params.mouseover = function (i_plot, i, d) {
+					three_d.set_point_color(i_plot, i, 0xFFFFFF);
+				};
+
+				params.mouseout = function (i_plot, i, d) {
+					if (d.input_data.other.hasOwnProperty("clicked")) {
+						if (!d.input_data.other.clicked) {
+							three_d.set_point_color(i_plot, i, d.input_data.color);
+						} else {
+							three_d.set_point_color(i_plot, i, 0xFFFFFF);
+						}
+					} else {
+						three_d.set_point_color(i_plot, i, d.input_data.color);
+					}
+				};
+
+
+				params.click = function (i_plot, i, d) {
+					if (d.input_data.other.hasOwnProperty("clicked")) {
+						d.input_data.other.clicked = !d.input_data.other.clicked;
+					} else {
+						// First time clicking it.
+						d.input_data.other.clicked = true;
+					}
+
+					if (d.input_data.other.clicked) {
+						three_d.set_point_color(i_plot, i, 0xFFFFFF);
+						if (d.have_label) {
+							three_d.set_label_background_color(i_plot, i, 0xFFFFFF);
+						}
+
+					} else {
+						three_d.set_point_color(i_plot, i, d.input_data.color);
+						if (d.have_label) {
+							three_d.set_label_color(i_plot, i, d.input_data.color);
+							three_d.set_label_background_color(i_plot, i, 0x000000);
+						}
+					}
+				};
+
+				three_d.make_scatter(params);
+
+				three_d.plots[0].label_toggle = true;
+			}
+
+			$(document).ready(function () {
+				console.log("ready!");
+				$.getJSON("25chai2-24.json", function (data) {
+					init_plot(data);
+				});
+			});
+		</script>
+</body>
+
+</html>
