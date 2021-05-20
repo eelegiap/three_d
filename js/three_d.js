@@ -675,7 +675,7 @@ var mouse_zoom_wrapper = function(i_plot) {
 var mouse_zoom = function(event, i_plot) {
 	var scroll_amount = Math.sign(event.deltaY);
 	
-	var zoom_factor = 1.25;
+	var zoom_factor = 1.04;
 	
 	var i;
 	
@@ -5624,7 +5624,6 @@ var basic_plot_setup = function(i_plot, params) {
 	plots[i_plot].tried_initial_render = false;
 	
 	// First up, preparing the area.
-	
 	plots[i_plot].container_height = plots[i_plot].parent_div.offsetHeight;
 	
 	plots[i_plot].scene = new THREE.Scene();
@@ -5695,26 +5694,28 @@ var basic_plot_setup = function(i_plot, params) {
 	margin_right = isNaN(margin_right) ? 0 : margin_right;
 	border_left = isNaN(border_left) ? 0 : border_left;
 	border_right = isNaN(border_right) ? 0 : border_right;
-	
 	var margins = margin_left + margin_right + border_left + border_right;
 	
-	if (!params.hasOwnProperty("width") && !params.hasOwnProperty("height")) {
-		width = Math.min(plots[i_plot].parent_div.offsetWidth - margins, window.innerHeight);
-		height = width;
-	} else {
-		if (params.hasOwnProperty("width") && params.hasOwnProperty("height")) {
-			width = params.width;
-			height = params.height;
-		} else {
-			if (params.hasOwnProperty("width")) {
-				width = params.width;
-				height = Math.min(width, window.innerHeight);
-			} else {
-				height = params.height;
-				width = Math.min(plots[i_plot].parent_div.offsetWidth - margins, window.innerHeight);
-			}
-		}
-	}
+	// if (!params.hasOwnProperty("width") && !params.hasOwnProperty("height")) {
+	// 	width = Math.min(plots[i_plot].parent_div.offsetWidth - margins, window.innerHeight);
+	// 	height = width;
+	// } else {
+	// 	if (params.hasOwnProperty("width") && params.hasOwnProperty("height")) {
+	// 		width = params.width;
+	// 		height = params.height;
+	// 	} else {
+	// 		if (params.hasOwnProperty("width")) {
+	// 			width = params.width;
+	// 			height = Math.min(width, window.innerHeight);
+	// 		} else {
+	// 			height = params.height;
+	// 			width = Math.min(plots[i_plot].parent_div.offsetWidth - margins, window.innerHeight);
+	// 		}
+	// 	}
+	// }
+	// console.log();
+	width = $( window ).width() - 50 ; height = $( window ).height()
+	console.log('wdith, iheight', width, height)
 	
 	var temp_width = width + margins;
 	
@@ -5880,7 +5881,7 @@ var basic_plot_setup = function(i_plot, params) {
 	
 	var test_font_size = 96;
 	// The 1.08 is a fudge factor; the get_font_height() function doesn't really work.
-	plots[i_plot].font_ratio = 1.08 * get_font_height("font-family: " + font + "; font-size: " + test_font_size + "px", plots[i_plot].parent_div) / test_font_size;
+	plots[i_plot].font_ratio = 1 * get_font_height("font-family: " + font + "; font-size: " + test_font_size + "px", plots[i_plot].parent_div) / test_font_size;
 	
 	plots[i_plot].mouse = new THREE.Vector2();
 	plots[i_plot].raycaster = new THREE.Raycaster();
